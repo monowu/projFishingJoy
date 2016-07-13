@@ -1,0 +1,36 @@
+{
+    "project_type": "javascript",
+
+    "debugMode" : 1,
+    "showFPS" : false,
+    "frameRate" : 60,
+    "noCache" : false,
+    "id" : "gameCanvas",
+    "renderMode" : 0,
+    "engineDir":"frameworks/cocos2d-html5",
+
+    "modules" : ["cocos2d", "extensions"],
+
+    "jsList" : [
+        "src/resource.js",
+        "src/View/BubblesLayer.js",
+        "src/View/FishesLayer.js",
+        "src/View/Wave3DLayer.js",
+        "src/View/MenuLayer.js",
+        "src/View/MaskLayer.js",
+        "src/Scene/LobbyScene.js",
+        "src/Scene/GamePlayScene.js",
+        "src/View/Lobby/TitleLayer.js",
+        "src/View/Game/CannonsLayer.js",
+        "src/View/Game/AttackLayer.js",
+        "src/View/Game/WeaponLayer.js",
+        "src/View/Game/CounterLayer.js",
+        "src/View/Game/LevelLayer.js",
+        "src/View/Game/FeverLayer.js",
+        "src/Model/CannonsClass.js",
+        "src/Model/FishesClass.js",
+        "src/Model/BulletsClass.js",
+        "src/Model/CoinsClass.js",
+        "src/Model/NumbersClass.js"
+    ]
+}
