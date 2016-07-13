@@ -258,7 +258,7 @@ var attackLayer = cc.Layer.extend({
             var ny = y / Math.sqrt(x*x + y*y);
 
             if(isAim){
-                bulletC.shootSpeed /= 4;
+                bulletC.shootSpeed /= 2;
             }
 
             var bulletAction = cc.moveBy(bulletC.shootSpeed,

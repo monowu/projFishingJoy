@@ -72,9 +72,9 @@ var lobbyLayer = cc.Layer.extend({
         this._super();
     },
     onExitTransitionDidStart: function () {
-        this._super();
         //停止背景音樂
         audioEngine.stopMusic(res.Music_Lobby);
+        this._super();
     }
 });
 var GameLobbyScene = cc.Scene.extend({

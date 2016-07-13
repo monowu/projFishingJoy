@@ -1,7 +1,7 @@
 var totalCoins = 10000;
 var a_iCoin = 1;
 var _time = 1;
-var _interval = 1;
+var _interval = 2;
 var _level = 1;
 var _hit = 0;
 var _levelpercent = 0;
@@ -144,9 +144,9 @@ var backgroundLayer = cc.Layer.extend({
         this._super();
     },
     onExitTransitionDidStart: function () {
-        this._super();
         //停止背景音樂
         audioEngine.stopMusic(res.Music_Game);
+        this._super();
     }
 });
 

@@ -209,7 +209,7 @@ var addWeapon = cc.Layer.extend({
                     aimTarget.isLock = true;
 
                     //連擊，直到鎖定的魚死亡或離開畫面
-                    aimSchedule.schedule(aimSchedule.shootingCombo, 0.05, cc.REPEAT_FOREVER, 0);
+                    aimSchedule.schedule(aimSchedule.shootingCombo, 0.1, cc.REPEAT_FOREVER, 0);
                 }
             }
         });
