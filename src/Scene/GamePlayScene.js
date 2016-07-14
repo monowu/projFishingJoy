@@ -22,7 +22,6 @@ var backgroundLayer = cc.Layer.extend({
         this._super();
         game = this;
         game.schedule(addPlayFishs, _interval, cc.REPEAT_FOREVER, _time);
-        
     },
     init: function () {
         var centerpos = cc.p(size.width / 2, size.height / 2);
@@ -105,6 +104,20 @@ var backgroundLayer = cc.Layer.extend({
                     return true;
                 }
                 return false;
+            },
+            onTouchMoved: function (touch, event) {
+                var target = event.getCurrentTarget();
+                var locationInNode = target.convertToNodeSpace(touch.getLocation());
+                var s = target.getContentSize();
+                var rect = cc.rect(0, 0, s.width, s.height);
+                if (cc.rectContainsPoint(rect, locationInNode)) {
+                    var touchPos = locationInNode;
+                    if(isLighting){
+                        //Weapons.setVertex(touchPos);
+                    }else {
+                        cannons.updateRotation(touchPos);
+                    }
+                }
             },
             onTouchEnded: function (touch, event) {
                 var target = event.getCurrentTarget();
