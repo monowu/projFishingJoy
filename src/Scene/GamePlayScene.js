@@ -97,11 +97,7 @@ var GamePlayView = cc.Node.extend({
     onExit: function () {
         SchedulerList.Game.unscheduleUpdate();
         Presenter.offScheduler(SchedulerList._forGame);
-        if(this.touchListener != null){
-            cc.eventManager.removeListener(this.touchListener);
-            this.touchListener.release();
-            this.touchListener = null;
-        }
+        Presenter.removeTouchListener();
         SchedulerList.Game.removeAllChildren(true);
         this._super();
     },

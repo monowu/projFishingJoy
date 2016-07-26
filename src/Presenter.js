@@ -51,6 +51,13 @@ var Presenter = cc.Node.extend({
         });
         cc.eventManager.addListener(this.touchListener, background);
     },
+    removeTouchListener: function () {
+        if(this.touchListener != null){
+            cc.eventManager.removeListener(this.touchListener);
+            this.touchListener.release();
+            this.touchListener = null;
+        }
+    },
     musicOn: function (from) {
             switch (from){
                 case From._lobby:
