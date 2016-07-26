@@ -1,6 +1,7 @@
-var cannonsClass = cc.Class.extend({
+var CannonSprite = cc.Sprite.extend({
     arrAnimFrames: null,
     ctor: function (no) {
+        this._super();
         cc.spriteFrameCache.addSpriteFrames(res.Cannon_plist , res.Cannon_png);
 
         this.arrAnimFrames = [];

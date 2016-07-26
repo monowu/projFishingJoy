@@ -439,7 +439,7 @@ cc.TextureAtlas = cc.Class.extend(/** @lends cc.TextureAtlas# */{  //WebGL only
 
     /**
      * <p>Removes all Quads. <br />
-     * The TextureAtlas capacity remains untouched. No memory is freed.<br />
+     * The TextureAtlas capacity remains untouched. BulletNo memory is freed.<br />
      * The total number of quads to be drawn will be 0</p>
      */
     removeAllQuads: function () {

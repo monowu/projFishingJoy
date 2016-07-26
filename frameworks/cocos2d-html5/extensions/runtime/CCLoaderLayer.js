@@ -974,7 +974,7 @@ cc.runtime.network = cc.network;
 
 cc.LoaderScene._preload = cc.LoaderScene.preload;
 cc.LoaderScene.preload = function (arr, cb, target) {
-    // No extension
+    // BulletNo extension
     var isGroups = (arr[0] && arr[0].indexOf('.') === -1);
     if (isGroups) {
         if (arr.indexOf('boot') === -1) {

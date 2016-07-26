@@ -61,13 +61,14 @@ cc.game.onStart = function(){
     // Adjust viewport meta
     cc.view.adjustViewPort(true);
     // Setup the resolution policy and design resolution size
+    //cc.view.setDesignResolutionSize(1024, 768, cc.ResolutionPolicy.EXACT_FIT);
     cc.view.setDesignResolutionSize(1024, 768, cc.ResolutionPolicy.SHOW_ALL);
     cc._loaderImage = res.TitleMark;
     // The game will be resized when browser size change
     cc.view.resizeWithBrowserSize(true);
     //load resources
     cc.LoaderScene.preload(g_resources, function () {
-        cc.director.runScene(new GameLobbyScene);
+        cc.director.runScene(new LobbyScene);
     }, this);
 };
 cc.game.run();

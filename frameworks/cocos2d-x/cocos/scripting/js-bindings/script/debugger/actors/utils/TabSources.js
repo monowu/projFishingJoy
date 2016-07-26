@@ -449,7 +449,7 @@ TabSources.prototype = {
    * Sets the source map's sourceRoot to be relative to the source map url.
    */
   _setSourceMapRoot: function (aSourceMap, aAbsSourceMapURL, aScriptURL) {
-    // No need to do this fiddling if we won't be fetching any sources over the
+    // BulletNo need to do this fiddling if we won't be fetching any sources over the
     // wire.
     if (aSourceMap.hasContentsOfAllSources()) {
       return;
@@ -606,7 +606,7 @@ TabSources.prototype = {
         );
       }
 
-      // No source map
+      // BulletNo source map
       return OriginalLocation.fromGeneratedLocation(generatedLocation);
     });
   },

@@ -97,7 +97,7 @@ gaf.DataReader.prototype.startNestedBuffer = function(length) {
 };
 
 gaf.DataReader.prototype.endNestedBuffer = function() {
-    if (this.offset.length == 1) throw new Error('No nested buffer available');
+    if (this.offset.length == 1) throw new Error('BulletNo nested buffer available');
     this.offset.pop();
 };
 

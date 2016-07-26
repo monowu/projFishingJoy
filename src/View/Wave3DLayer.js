@@ -1,9 +1,10 @@
+// view
 var wavesLayer = cc.Layer.extend({
-    ctor: function (no) {
+    ctor: function (from) {
         this._super();
-        this.doWave(no, null);
+        this.doWave(from, null);
     },
-    doWave: function (no, touchpos) {
+    doWave: function (from, touchpos) {
         //網格背景層
         this.rootNode = new cc.Sprite(res.Blank);
         var nodeGrid = new cc.NodeGrid();
@@ -11,11 +12,11 @@ var wavesLayer = cc.Layer.extend({
         this.addChild(nodeGrid, 0);
 
         //background
-        switch (no) {
-            case 0:
+        switch (from) {
+            case From._lobby:
                 var waveBg = new cc.Sprite(res.StartBg);
                 break;
-            case 1:
+            case From._game:
                 var waveBg = new cc.Sprite(res.GameBg);
                 break;
         }

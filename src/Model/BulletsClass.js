@@ -1,4 +1,4 @@
-var bulletsClass = cc.Class.extend({
+var BulletsSprite = cc.Sprite.extend({
     arrBulletFrames: null,
     arrNetFrames: null,
     shootRange: 0,
@@ -6,6 +6,7 @@ var bulletsClass = cc.Class.extend({
     bulletHurt: 0,
     bulletCost: 0,
     ctor: function (no) {
+        this._super();
         cc.spriteFrameCache.addSpriteFrames(res.Fish2_plist , res.Fish2_png);
         cc.spriteFrameCache.addSpriteFrames(res.Fish3_plist , res.Fish3_png);
         this.arrBulletFrames = [];

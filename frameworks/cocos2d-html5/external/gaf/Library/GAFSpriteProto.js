@@ -26,7 +26,7 @@ gaf._SpriteProto.prototype.getFrame = function()
     var usedScale = this.getAsset()._usedAtlasScale;
     cc.assert(usedScale, "Error. Atlas scale zero.");
     var frames = this.getFrames()[usedScale];
-    cc.assert(frames, "Error. No frames found for used scale `"+usedScale+"`");
+    cc.assert(frames, "Error. BulletNo frames found for used scale `"+usedScale+"`");
     return frames[this.getIdRef()];
 };
 

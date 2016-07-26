@@ -1,17 +1,9 @@
-var isFreezen = false;
-var isAim = false;
-var isLighting = false;
-var inEnchantment = false;
-
-var aimSchedule = null;
-var lightingSchedule = null;
-
 var lockonpos = null;
 var aimTarget = null;
 
 var addWeapon = cc.Layer.extend({
     timer: 9,
-    freezenNo: 0,
+    frozenNo: 0,
     aimNo: 1,
     lightingNo: 2,
     enchantmentNo: 3,
@@ -22,20 +14,20 @@ var addWeapon = cc.Layer.extend({
     ctor: function () {
         this._super();
         this.weaponMenu();
-        aimSchedule = this;
-        lightingSchedule = this;
+        SchedulerList.Weapon_Aim = this;
+        SchedulerList.Weapon_Lighting = this;
     },
     updateTimer: function () {
         if(this.arrTimer[0]){
             for(var i=0; i<this.arrTimer.length; i++){
-                this.arrTimer[i].removeFromParent();
+                this.arrTimer[i].removeFromParent(true);
                 this.arrTimer[i] = undefined;
             }
             this.arrTimer.splice(0, this.arrTimer.length);
         }
 
         var numstr = this.timer;
-        var numC = new numbersClass(numstr, 0);
+        var numC = new NumbersSprite(numstr, 0);
         this.num = new cc.Sprite(numC.arrNumFrames[0]);
         this.num.setPosition(cc.p(size.width/2, size.height-100));
         this.addChild(this.num);
@@ -45,8 +37,8 @@ var addWeapon = cc.Layer.extend({
 
         if(this.timer < 0){
             switch (this.no){
-                case this.freezenNo:
-                    this.endFreezen();
+                case this.frozenNo:
+                    this.endFrozen();
                     break;
                 case this.aimNo:
                     this.endAim();
@@ -59,7 +51,7 @@ var addWeapon = cc.Layer.extend({
             }
 
             this.endTimer();
-            if(inEnchantment){
+            if(Status.inEnchantment){
                 //展開結界
                 this.spreadEnchantment();
             }
@@ -100,10 +92,10 @@ var addWeapon = cc.Layer.extend({
         if(isEffectPlay){
             audioEngine.playEffect(res.Sound_button);
         }
-        //重複按無效，Fever、Freezen、Aim、Lighting狀態不可重複使用
-        if(!isFreezen && !isFever && !isAim && !isLighting && !inEnchantment){
-            isFreezen = true;
-            this.no = this.freezenNo;
+        //重複按無效，Fever、Frozen、Aim、Lighting狀態不可重複使用
+        if(!Status.isFrozen && !Status.isFever && !Status.isAim && !Status.isLighting && !Status.inEnchantment){
+            Status.isFrozen = true;
+            this.no = this.frozenNo;
 
             //使用一次消耗500金幣
             coinsCounter(-500, 0, 1);
@@ -112,10 +104,10 @@ var addWeapon = cc.Layer.extend({
             this.timer = 9;
             this.schedule(this.updateTimer, 1, 9, 0);
 
-            this.isFreezen();
+            this.isFrozen();
         }
     },
-    isFreezen: function () {
+    isFrozen: function () {
         this.freezebg = new cc.Sprite(res.Weapon_freeze_bg);
         this.freezebg.setPosition(size.width/2, size.height/2);
         this.addChild(this.freezebg);
@@ -130,11 +122,12 @@ var addWeapon = cc.Layer.extend({
             var bubble = bubbles[i];
             bubble.pause();
         }
-        game.unschedule(addPlayFishs);
-        bubbleFrame.unschedule(updateBubble);
+        
+        Presenter.offScheduler(SchedulerList._forGame);
+        Presenter.offScheduler(SchedulerList._forBubble);
     },
-    endFreezen: function () {
-        isFreezen = false;
+    endFrozen: function () {
+        Status.isFrozen = false;
         this.no = -1;
 
         this.removeChild(this.freezebg);
@@ -149,9 +142,9 @@ var addWeapon = cc.Layer.extend({
             var bubble = bubbles[i];
             bubble.resume();
         }
-    
-        game.schedule(addPlayFishs, 2, cc.REPEAT_FOREVER, 0.2);
-        bubbleFrame.schedule(updateBubble, 1, cc.REPEAT_FOREVER, 0.5);
+
+        Presenter.onScheduler(SchedulerList._forGame);
+        Presenter.onScheduler(SchedulerList._forBubble);
     },
     aim: function () {
         if(isEffectPlay){
@@ -159,8 +152,8 @@ var addWeapon = cc.Layer.extend({
         }
 
         //Fever、Freezen、Aim、Lighting狀態不可重複使用
-        if(!isFreezen && !isFever && !isAim && !isLighting && !inEnchantment) {
-            isAim = true;
+        if(!Status.isFrozen && !Status.isFever && !Status.isAim && !Status.isLighting && !Status.inEnchantment) {
+            Status.isAim = true;
             this.no = this.aimNo;
 
             cc.eventManager.pauseTarget(background);
@@ -173,12 +166,12 @@ var addWeapon = cc.Layer.extend({
             this.schedule(this.updateTimer, 1, 9, 0);
 
             // Lock on
-            aimSchedule.scheduleUpdate();
+            SchedulerList.Weapon_Aim.scheduleUpdate();
 
         }
     },
     update: function () {
-        aimSchedule.aimListener = cc.EventListener.create({
+        this.aimListener = cc.EventListener.create({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
             onTouchBegan: function (touch, event) {
@@ -191,8 +184,8 @@ var addWeapon = cc.Layer.extend({
                     //選擇目標或切換目標
                     var tintAct = cc.tintBy(0.1, 0, 125, 125);
                     target.runAction(cc.sequence(tintAct, tintAct.reverse()));
-                    if(aimSchedule.getScheduler() != null){
-                        aimSchedule.unschedule(aimSchedule.shootingCombo);
+                    if(SchedulerList.Weapon_Aim.getScheduler() != null){
+                        SchedulerList.Weapon_Aim.unschedule(SchedulerList.Weapon_Aim.shootingCombo);
                     }
                     return true;
                 }
@@ -209,18 +202,18 @@ var addWeapon = cc.Layer.extend({
                     aimTarget.isLock = true;
 
                     //連擊，直到鎖定的魚死亡或離開畫面
-                    aimSchedule.schedule(aimSchedule.shootingCombo, 0.1, cc.REPEAT_FOREVER, 0);
+                    SchedulerList.Weapon_Aim.schedule(SchedulerList.Weapon_Aim.shootingCombo, 0.02, cc.REPEAT_FOREVER, 0);
                 }
             }
         });
         
         //在每隻魚身上添加 listener
-        if(aimSchedule.aimListener != null){
-            if(isAim){
+        if(this.aimListener != null){
+            if(Status.isAim){
                 var fishs = FishSprite;
                 for (var i in fishs) {
                     var fish = fishs[i];
-                    cc.eventManager.addListener(aimSchedule.aimListener.clone(), fish);
+                    cc.eventManager.addListener(this.aimListener.clone(), fish);
                 }
             }
         }
@@ -229,11 +222,11 @@ var addWeapon = cc.Layer.extend({
         var life = aimTarget.itsLife;
         var pos = aimTarget.oldPos;
         if(life<=0 || pos.x<-10 || pos.x>size.width+10){
-            aimSchedule.unschedule(aimSchedule.shootingCombo);
-            if(aimSchedule.aimListener != null){
-                cc.eventManager.removeListener(aimSchedule.aimListener);
-                aimSchedule.aimListener.release();
-                aimSchedule.aimListener = null;
+            SchedulerList.Weapon_Aim.unschedule(SchedulerList.Weapon_Aim.shootingCombo);
+            if(SchedulerList.Weapon_Aim.aimListener != null){
+                cc.eventManager.removeListener(this.aimListener);
+                this.aimListener.release();
+                this.aimListener = null;
             }
         }else{
             lockonpos = cc.p(pos.x, pos.y);
@@ -241,25 +234,25 @@ var addWeapon = cc.Layer.extend({
         }
     },
     endAim: function () {
-        isAim = false;
+        Status.isAim = false;
         this.no = -1;
 
         cc.eventManager.resumeTarget(background);
 
-        aimSchedule.unscheduleUpdate();
-        aimSchedule.unschedule(aimSchedule.shootingCombo);
+        SchedulerList.Weapon_Aim.unscheduleUpdate();
+        SchedulerList.Weapon_Aim.unschedule(SchedulerList.Weapon_Aim.shootingCombo);
 
-        if(aimSchedule.aimListener != null){
+        if(this.aimListener != null){
             var fishs = FishSprite;
             for (var i in fishs) {
                 var fish = fishs[i];
                 cc.eventManager.pauseTarget(fish);
-                cc.eventManager.removeListener(aimSchedule.aimListener.clone());
-                aimSchedule.aimListener.clone().release();
+                cc.eventManager.removeListener(this.aimListener.clone());
+                this.aimListener.clone().release();
             }
-            cc.eventManager.removeListener(aimSchedule.aimListener);
-            aimSchedule.aimListener.release();
-            aimSchedule.aimListener = null;
+            cc.eventManager.removeListener(this.aimListener);
+            this.aimListener.release();
+            this.aimListener = null;
         }
     },
     lighting: function () {
@@ -267,10 +260,10 @@ var addWeapon = cc.Layer.extend({
             audioEngine.playEffect(res.Sound_button);
         }
         //Fever、Freezen、Aim、Lighting狀態不可重複使用
-        if(!isFreezen && !isFever && !isAim && !isLighting) {
+        if(!Status.isFrozen && !Status.isFever && !Status.isAim && !Status.isLighting && !Status.inEnchantment) {
             //不在結界中
-            if(!inEnchantment){
-                isLighting = true;
+            if(!Status.inEnchantment){
+                Status.isLighting = true;
                 this.no = this.lightingNo;
 
                 //使用一次消耗500金幣
@@ -311,9 +304,9 @@ var addWeapon = cc.Layer.extend({
         line.setScale(scale);
     },
     endLighting: function () {
-        isLighting = false;
+        Status.isLighting = false;
         this.no = -1;
-        inEnchantment = true;
+        Status.inEnchantment = true;
 
     },
     spreadEnchantment: function () {
@@ -321,7 +314,7 @@ var addWeapon = cc.Layer.extend({
 
         //總傷害200
         this.attack = 500;
-        lightingSchedule.schedule(this.isInEnchantment, 0, cc.REPEAT_FOREVER, 0);
+        SchedulerList.Weapon_Lighting.schedule(this.isInEnchantment, 0, cc.REPEAT_FOREVER, 0);
     },
     isInEnchantment: function () {
         for(var i=0; i<FishSprite.length; i++){
@@ -332,7 +325,7 @@ var addWeapon = cc.Layer.extend({
                     this.attack -= FishSprite[i].itsLife;
 
                     //碰到閃電，翻肚
-                    var hitfishC = new fishsClass(FishSprite[i].fishno, 1);
+                    var hitfishC = new FishsSprite(FishSprite[i].fishno, 1);
                     var hitfish = new cc.Sprite(hitfishC.arrAnimFrames[0]);
                     this.addChild(hitfish);
                     hitfish.setPosition(cc.p(FishSprite[i].oldPos.x, FishSprite[i].oldPos.y));
@@ -351,7 +344,7 @@ var addWeapon = cc.Layer.extend({
                     coinsCounter(FishSprite[i].coin, 0, 1);
 
                     FishSprite[i].itsLife = -1;
-                    FishSprite[i].removeFromParent();
+                    FishSprite[i].removeFromParent(true);
                     FishSprite[i] = undefined;
                     FishSprite.splice(i, 1);
                     i = i - 1;
@@ -381,9 +374,9 @@ var addWeapon = cc.Layer.extend({
         return false;
     },
     removeEnchantment: function () {
-        lightingSchedule.unschedule(this.isInEnchantment);
+        SchedulerList.Weapon_Lighting.unschedule(this.isInEnchantment);
 
-        if(inEnchantment){
+        if(Status.inEnchantment){
             //清掉上次的頂點、結界
             if(this.arrVertex[0]){
                 for(var i=0; i<this.arrVertex.length; i++){
@@ -393,14 +386,14 @@ var addWeapon = cc.Layer.extend({
                 }
                 if(this.arrLightingLines[0]){
                     for(var i=0; i<this.arrLightingLines.length; i++){
-                        this.arrLightingLines[i].removeFromParent();
+                        this.arrLightingLines[i].removeFromParent(true);
                         this.arrLightingLines[i] = undefined;
                     }
                     this.arrLightingLines.splice(0, this.arrLightingLines.length);
                 }
         }
 
-        inEnchantment = false;
+        Status.inEnchantment = false;
         this.no = -1;
 
     }

@@ -1722,7 +1722,7 @@
         // Emit error on next tick so it can be listened to
         var self = this;
         setTimeout(function() {
-          self.emit('error', 'No transports available');
+          self.emit('error', 'BulletNo transports available');
         }, 0);
         return;
       } else {
@@ -3702,7 +3702,7 @@
 
   /**
    * Invokes `console.log()` when available.
-   * No-op when `console.log` is not a "function".
+   * BulletNo-op when `console.log` is not a "function".
    *
    * @api public
    */
@@ -5053,7 +5053,7 @@
           return continuationByte & 0x3F;
         }
 
-        // If we end up here, it¡¯s not a continuation byte
+        // If we end up here, itï¿½ï¿½s not a continuation byte
         throw Error('Invalid continuation byte');
       }
 
@@ -6421,7 +6421,7 @@
             }
           };
         } else {
-          // No bugs detected; use the standard `for...in` algorithm.
+          // BulletNo bugs detected; use the standard `for...in` algorithm.
           forEach = function (object, callback) {
             var isFunction = getClass.call(object) == functionClass, property, isConstructor;
             for (property in object) {

@@ -348,7 +348,7 @@ cc.ParticleBatchNode = cc.Node.extend(/** @lends cc.ParticleBatchNode# */{
     setTexture:function (texture) {
         this.textureAtlas.texture = texture;
 
-        // If the new texture has No premultiplied alpha, AND the blendFunc hasn't been changed, then update it
+        // If the new texture has BulletNo premultiplied alpha, AND the blendFunc hasn't been changed, then update it
         var locBlendFunc = this._blendFunc;
         if (texture && !texture.hasPremultipliedAlpha() && ( locBlendFunc.src === cc.BLEND_SRC && locBlendFunc.dst === cc.BLEND_DST )) {
             locBlendFunc.src = cc.SRC_ALPHA;

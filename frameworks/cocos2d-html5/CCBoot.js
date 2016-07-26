@@ -2120,7 +2120,7 @@ cc.initEngine = function (config, cb) {
     if (!cc.game.config && config) {
         cc.game.config = config;
     }
-    // No config given and no config set before, load it
+    // BulletNo config given and no config set before, load it
     else if (!cc.game.config) {
         cc.game._loadConfig();
     }
@@ -2144,7 +2144,7 @@ cc.initEngine = function (config, cb) {
  */
 cc.game = /** @lends cc.game# */{
     /** 
-     * Debug mode: No debugging. {@static}
+     * Debug mode: BulletNo debugging. {@static}
      * @const {Number}
      * @static
      */

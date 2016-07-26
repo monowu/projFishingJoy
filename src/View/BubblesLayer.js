@@ -1,13 +1,12 @@
 var BubbleSprites = [];
-var bubbleFrame;
 
 var bubblesLayer = cc.Layer.extend({
     BubbleSprites: null,
     ctor: function () {
         this._super();
-        bubbleFrame = this;
+        SchedulerList.BubbleFrame = this;
         BubbleSprites = [];
-        this.schedule(updateBubble, 1, cc.REPEAT_FOREVER, 0.5);
+        Presenter.onScheduler(SchedulerList._forBubble);
     },
     addBubble: function () {
         var bubble = new cc.Sprite(res.Bubble);
@@ -29,8 +28,8 @@ var bubblesLayer = cc.Layer.extend({
     removeBubble: function () {
         //讓離開畫面的Bubble被消失，節省資源
         for (var i = 0; i < BubbleSprites.length; i++) {
-            if(BubbleSprites[i].y >= cc.winSize.height+20) {
-                BubbleSprites[i].removeFromParent();
+            if(BubbleSprites[i].y >= size.height+20) {
+                BubbleSprites[i].removeFromParent(true);
                 BubbleSprites[i] = undefined;
                 BubbleSprites.splice(i, 1);
                 i = i - 1;
@@ -38,8 +37,3 @@ var bubblesLayer = cc.Layer.extend({
         }
     }
 });
-
-var updateBubble = function() {
-    bubbleFrame.addBubble();
-    bubbleFrame.removeBubble();
-};

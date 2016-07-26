@@ -9,7 +9,7 @@ var counterLayer = cc.Layer.extend({
     setCounter: function (coins, state, col) {
         if(this.CoinsDig[0]){
             for(var i=0; i<this.CoinsDig.length; i++){
-                this.CoinsDig[i].removeFromParent();
+                this.CoinsDig[i].removeFromParent(true);
                 this.CoinsDig[i] = undefined;
             }
             this.CoinsDig.splice(0, this.CoinsDig.length);
@@ -24,7 +24,7 @@ var counterLayer = cc.Layer.extend({
             div = Math.floor(div/10);
         }
         for(var i=0; i<digits.length; i++){
-            var digC = new numbersClass(digits[i], col);
+            var digC = new NumbersSprite(digits[i], col);
             var dig = new cc.Sprite(digC.arrNumFrames[0]);
 
             dig.setPosition(cc.p(198-i*28, 18));

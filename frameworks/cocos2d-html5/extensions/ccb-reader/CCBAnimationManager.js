@@ -569,7 +569,7 @@ cc.BuilderAnimationManager = cc.Class.extend({
             // Use base value (no animation)
             var baseValue = this._getBaseValue(node, seqProp.getName());
             if(!baseValue)
-                cc.log("cc.BuilderAnimationManager._setFirstFrame(): No baseValue found for property");
+                cc.log("cc.BuilderAnimationManager._setFirstFrame(): BulletNo baseValue found for property");
             this._setAnimatedProperty(seqProp.getName(), node, baseValue, tweenDuration);
         } else {
             // Use first keyframe

@@ -1429,7 +1429,7 @@ DebuggerServerConnection.prototype = {
     if (!actor) {
       this.transport.send({ from: actorID ? actorID : "root",
                             error: "noSuchActor",
-                            message: "No such actor for ID: " + actorID });
+                            message: "BulletNo such actor for ID: " + actorID });
       return;
     }
 

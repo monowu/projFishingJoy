@@ -1,3 +1,4 @@
+// view
 var titleLayer = cc.Layer.extend({
     init: function () {
         this._super();

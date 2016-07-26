@@ -313,7 +313,7 @@ plugin.extend('facebook', {
     dialog: function (info, callback) {
         if (!info) {
             typeof callback === 'function' && callback(1, {
-                error_message: "No info parameter provided"
+                error_message: "BulletNo info parameter provided"
             });
             return;
         }
@@ -493,7 +493,7 @@ plugin.extend('facebook', {
     appRequest: function (info, callback) {
         if (!info) {
             typeof callback === 'function' && callback(1, {
-                error_message: "No info parameter provided"
+                error_message: "BulletNo info parameter provided"
             });
             return;
         }

@@ -1,27 +1,21 @@
-var totalCoins = 10000;
-var a_iCoin = 1;
-var _time = 1;
-var _interval = 2;
-var _level = 1;
-var _hit = 0;
-var _levelpercent = 0;
-
 var game = null;
 
 var background;
 var LevelBar;
 var EnergyBar;
-var PlayFishs;
+var PlayFishes;
 var Weapons;
 var levelCount;
 var counter;
 var cannons;
 
-var backgroundLayer = cc.Layer.extend({
+var GamePlayView = cc.Node.extend({
     ctor: function () {
         this._super();
+
         game = this;
-        game.schedule(addPlayFishs, _interval, cc.REPEAT_FOREVER, _time);
+        SchedulerList.Game = this;
+        Presenter.onScheduler(SchedulerList._forGame);
     },
     init: function () {
         var centerpos = cc.p(size.width / 2, size.height / 2);
@@ -36,16 +30,16 @@ var backgroundLayer = cc.Layer.extend({
         this.addChild(background);
 
         // wave
-        var waves = new wavesLayer(1);
+        var waves = new wavesLayer(From._game);
         this.addChild(waves);
         
         //bubble
         var bubbles = new bubblesLayer();
         this.addChild(bubbles);
 
-        //fishs
-        PlayFishs = new fishsLayer();
-        this.addChild(PlayFishs);
+        //LobbyFishes
+        PlayFishes = new fishsLayer();
+        this.addChild(PlayFishes);
 
         //weapon
         Weapons = new addWeapon();
@@ -54,7 +48,7 @@ var backgroundLayer = cc.Layer.extend({
         //level bar
         LevelBar = new ccui.LoadingBar();
         LevelBar.loadTexture(res.Level_bar);
-        LevelBar.setPercent(_levelpercent);
+        LevelBar.setPercent(Parameters._levelpercent);
         LevelBar.setPosition(levelBarpos);
         this.addChild(LevelBar);
 
@@ -63,7 +57,7 @@ var backgroundLayer = cc.Layer.extend({
         this.addChild(levelBg);
 
         levelCount = new levelLayer();
-        levelCount.init(_level);
+        levelCount.init(Parameters._level);
         this.addChild(levelCount);
 
         //bottom bar
@@ -73,12 +67,12 @@ var backgroundLayer = cc.Layer.extend({
 
         EnergyBar = new ccui.LoadingBar();
         EnergyBar.loadTexture(res.Energy_bar);
-        EnergyBar.setPercent(_hit);
+        EnergyBar.setPercent(Parameters._hit);
         EnergyBar.setPosition(energyBarpos);
         this.addChild(EnergyBar);
         
         counter = new counterLayer();
-        counter.init(totalCoins, 0, 1);
+        counter.init(Parameters._totalCoins, 0, 1);
         this.addChild(counter);
 
         //attack
@@ -87,128 +81,41 @@ var backgroundLayer = cc.Layer.extend({
         this.addChild(cannons);
 
         //menu
-        var menu = new menuLayer(1);
+        var menu = new menuLayer(From._game);
         this.addChild(menu);
 
         //touch listener
-        this.touchListener = cc.EventListener.create({
-            event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            swallowTouches: true,
-            onTouchBegan: function (touch, event) {
-                var target = event.getCurrentTarget();
-                var locationInNode = target.convertToNodeSpace(touch.getLocation());
-                var s = target.getContentSize();
-                var rect = cc.rect(0, 0, s.width, s.height);
-                //點擊範圍判斷
-                if (cc.rectContainsPoint(rect, locationInNode)) {
-                    return true;
-                }
-                return false;
-            },
-            onTouchMoved: function (touch, event) {
-                var target = event.getCurrentTarget();
-                var locationInNode = target.convertToNodeSpace(touch.getLocation());
-                var s = target.getContentSize();
-                var rect = cc.rect(0, 0, s.width, s.height);
-                if (cc.rectContainsPoint(rect, locationInNode)) {
-                    var touchPos = locationInNode;
-                    if(isLighting){
-                        //Weapons.setVertex(touchPos);
-                    }else {
-                        cannons.updateRotation(touchPos);
-                    }
-                }
-            },
-            onTouchEnded: function (touch, event) {
-                var target = event.getCurrentTarget();
-                var locationInNode = target.convertToNodeSpace(touch.getLocation());
-                var s = target.getContentSize();
-                var rect = cc.rect(0, 0, s.width, s.height);
-
-                if (cc.rectContainsPoint(rect, locationInNode)) {
-                    var touchPos = locationInNode;
-                    if(isLighting){
-                        Weapons.setVertex(touchPos);
-                    }else {
-                        cannons.updateRotation(touchPos);
-                    }
-                }
-            }
-        });
-        cc.eventManager.addListener(this.touchListener, background);
+        Presenter.addTouchListener();
     },
     onEnterTransitionDidFinish: function () {
         this._super();
         //播放背景音樂
         if(isMusicPlay){
-            audioEngine.playMusic(res.Music_Game, true);
+            Presenter.musicOn(From._game);
         }
     },
     onExit: function () {
-        console.log("onExit play");
-        game.unscheduleUpdate();
-        game.unschedule(addPlayFishs);
+        SchedulerList.Game.unscheduleUpdate();
+        Presenter.offScheduler(SchedulerList._forGame);
         if(this.touchListener != null){
             cc.eventManager.removeListener(this.touchListener);
             this.touchListener.release();
             this.touchListener = null;
         }
-        game.removeAllChildren(true);
+        SchedulerList.Game.removeAllChildren(true);
         this._super();
     },
     onExitTransitionDidStart: function () {
         //停止背景音樂
-        audioEngine.stopMusic(res.Music_Game);
+        Presenter.musicOff(From._game);
         this._super();
     }
 });
 
-var addPlayFishs = function () {
-    _time += _interval;
-    if(_time == 10){
-        //金幣數量每10秒加 a_iCoin
-        autoIncreaseCoins();
-        dropCoins(1, cc.p(170, 80));
-    }
-
-    Picno = Math.floor(Math.random()*100);
-    Side = Math.floor(Math.random()*2);
-    State = 0;
-
-    if (Picno < 90) {
-        Picno = Math.floor(Picno/13) +1;
-        Num = 15;
-        Offset = 2;
-    }else if (Picno < 98 && Picno >=90) {
-        if (Picno == 90) Picno = 8;
-        if (Picno == 91) Picno = 9;
-        if (Picno == 94 || Picno == 95) Picno = 10;
-        if (Picno == 96 || Picno == 97) Picno = 14;
-        if (Picno == 92) Picno = 16;
-        if (Picno == 93) Picno = 18;
-        Num = 2;
-        Offset = 1;
-    }else{
-        if(Picno == 99){
-            Picno = 17;
-        } else {
-            Picno = 13;
-        }
-        Num = 0;
-        Offset = 1;
-    }
-    PlayFishs.init(Picno, State, Side, Num, Offset);
-};
-
-var autoIncreaseCoins = function () {
-    coinsCounter(a_iCoin, 0, 1);
-    _time = 0;
-};
-
 var GamePlayScene = cc.Scene.extend({
     onEnter: function () {
         this._super();
-        var gamelayer = new backgroundLayer();
+        var gamelayer = new GamePlayView();
         gamelayer.init();
         this.addChild(gamelayer);
     }

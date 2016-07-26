@@ -108,7 +108,7 @@ cc._LogInfos = {
     swap: "cc.swap is being modified from original macro, please check usage",
     checkGLErrorDebug: "WebGL error %s",
 
-    animationCache__addAnimationsWithDictionary: "cocos2d: cc.AnimationCache: No animations were found in provided dictionary.",
+    animationCache__addAnimationsWithDictionary: "cocos2d: cc.AnimationCache: BulletNo animations were found in provided dictionary.",
     animationCache__addAnimationsWithDictionary_2: "cc.AnimationCache. Invalid animation format",
     animationCache_addAnimations: "cc.AnimationCache.addAnimations(): File could not be found",
     animationCache__parseVersion1: "cocos2d: cc.AnimationCache: Items '%s' found in dictionary without any frames - cannot add to animation cache.",

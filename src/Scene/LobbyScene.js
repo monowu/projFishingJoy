@@ -1,40 +1,38 @@
+//宣告一個Presenter
+var Presenter = new Presenter();
+
+//聲音設定
 var audioEngine = cc.audioEngine;
 var isMusicPlay = true;
 var isEffectPlay = true;
 
 var size = cc.winSize;
 
-var lobby = null;
-var fishs;
+var LobbyFishes;
 
-var Picno;
-var State;
-var Side;
-var Num;
-var Offset;
-
-var lobbyLayer = cc.Layer.extend({
+var LobbyView = cc.Node.extend({
     ctor: function () {
         this._super();
-        lobby = this;
-        lobby.schedule(this.addFishs, 6, cc.REPEAT_FOREVER, 0.5);
+        
+        SchedulerList.Lobby = this;
+        Presenter.onScheduler(SchedulerList._forLobby);
     },
     init: function () {
         this._super();
         
         //background
         var staBackground = new cc.Sprite(res.StartBg);
-        this.addChild(staBackground, -1, 888);
+        this.addChild(staBackground);
         var centerpos = cc.p(size.width/2, size.height/2);
         staBackground.setPosition(centerpos);
 
         // wave
-        var waves = new wavesLayer(0);
+        var waves = new wavesLayer(From._lobby);
         this.addChild(waves);
 
         //fish
-        fishs = new fishsLayer();
-        this.addChild(fishs);
+        LobbyFishes = new fishsLayer();
+        this.addChild(LobbyFishes);
 
         //bubble
         var bubbles = new bubblesLayer();
@@ -46,42 +44,31 @@ var lobbyLayer = cc.Layer.extend({
         this.addChild(sparktitle);
 
         //menu
-        var menu = new menuLayer(0);
+        var menu = new menuLayer(From._lobby);
         this.addChild(menu);
     },
     onEnterTransitionDidFinish: function () {
         this._super();
         //播放背景音樂
-        if(isMusicPlay){
-            console.log("Lobby onEnterTransitionDidFinish");
-            audioEngine.playMusic(res.Music_Lobby, true);
-        }
-    },
-    addFishs: function () {
-        Picno = Math.floor(Math.random()*7)+1;
-        Side = Math.floor(Math.random()*2);
-        State = 0; Num = 5; Offset = 1;
-
-        fishs.init(Picno, State, Side, Num, Offset);
+        Presenter.musicOn(From._lobby);
     },
     onExit: function () {
-        console.log("onExit");
-        lobby.unscheduleUpdate();
-        lobby.unschedule(this.addFishs);
-        lobby.removeAllChildren(true);
+        SchedulerList.Lobby.unscheduleUpdate();
+        Presenter.offScheduler(SchedulerList._forLobby);
+        SchedulerList.Lobby.removeAllChildren(true);
         this._super();
     },
     onExitTransitionDidStart: function () {
         //停止背景音樂
-        audioEngine.stopMusic(res.Music_Lobby);
+        Presenter.musicOff(From._lobby);
         this._super();
     }
 });
-var GameLobbyScene = cc.Scene.extend({
+var LobbyScene = cc.Scene.extend({
     onEnter: function () {
         this._super();
-        var layer = new lobbyLayer();
-        layer.init();
-        this.addChild(layer);
+        var lobby = new LobbyView();
+        lobby.init();
+        this.addChild(lobby);
     }
 });

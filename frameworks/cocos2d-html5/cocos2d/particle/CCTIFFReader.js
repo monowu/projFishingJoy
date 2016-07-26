@@ -152,7 +152,7 @@ cc.tiffReader = /** @lends cc.tiffReader# */{
 
     getBytes: function (numBytes, offset) {
         if (numBytes <= 0) {
-            cc.log("No bytes requested");
+            cc.log("BulletNo bytes requested");
         } else if (numBytes <= 1) {
             return this.getUint8(offset);
         } else if (numBytes <= 2) {
@@ -175,7 +175,7 @@ cc.tiffReader = /** @lends cc.tiffReader# */{
         var shiftLeft,rawBits;
 
         if (totalBits <= 0) {
-            console.log("No bits requested");
+            console.log("BulletNo bits requested");
         } else if (totalBits <= 8) {
             shiftLeft = 24 + bitOffset;
             rawBits = this.getUint8(newByteOffset);

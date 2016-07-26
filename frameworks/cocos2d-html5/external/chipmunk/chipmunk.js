@@ -4718,7 +4718,7 @@ Space.prototype.pushFreshContactBuffer = function()
 	var head = this.contactBuffersHead;
 
 	if(!head){
-		// No buffers have been allocated, make one
+		// BulletNo buffers have been allocated, make one
 		this.contactBuffersHead = new ContactBuffer(stamp, null);
 	} else if(stamp - head.next.stamp > this.collisionPersistence){
 		// The tail buffer is available, rotate the ring

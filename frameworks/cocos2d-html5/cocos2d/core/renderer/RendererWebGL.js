@@ -410,7 +410,7 @@ return {
                 }
                 end = i + count;
 
-                // No valid batch
+                // BulletNo valid batch
                 if (count <= 1) {
                     cmd1 = _prevRenderCmds[i];
                     cmd1._vBuffer = null;

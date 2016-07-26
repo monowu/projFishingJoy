@@ -1,4 +1,4 @@
-var fishsClass = cc.Class.extend({
+var FishsSprite = cc.Sprite.extend({
     arrAnimFrames: null,
     fishSpeed: 1,
     fishLife: 1,
@@ -6,6 +6,7 @@ var fishsClass = cc.Class.extend({
     fishNo: 0,
     fishGain: 0,
     ctor: function (picno, state) {
+        this._super();
         cc.spriteFrameCache.addSpriteFrames(res.Fish1_plist , res.Fish1_png);
         cc.spriteFrameCache.addSpriteFrames(res.Fish2_plist , res.Fish2_png);
         cc.spriteFrameCache.addSpriteFrames(res.Fish3_plist , res.Fish3_png);

@@ -8,9 +8,10 @@ var levelLayer = cc.Layer.extend({
         this.showLevel(level);
     },
     showLevel: function (level) {
+        //顯示現在幾等
         if(this.arrLevelCount[0]){
             for(var i=0; i<this.arrLevelCount.length; i++){
-                this.arrLevelCount[i].removeFromParent();
+                this.arrLevelCount[i].removeFromParent(true);
                 this.arrLevelCount[i] = undefined;
             }
             this.arrLevelCount.splice(0, this.arrLevelCount.length);
@@ -32,7 +33,7 @@ var levelLayer = cc.Layer.extend({
             length = digits.length;
         }
         for(var i=length-1; i>=0; i--){
-            var digC = new numbersClass(digits[i], 0);
+            var digC = new NumbersSprite(digits[i], 0);
             var dig = new cc.Sprite(digC.arrNumFrames[0]);
             
             scale = 0.4;
@@ -44,17 +45,19 @@ var levelLayer = cc.Layer.extend({
         }
     },
     levelUp: function () {
+        //升級
         if(isEffectPlay){
             audioEngine.playEffect(res.Sound_level_up);
         }
         if(this.arrLevelUp[0]){
             for(var i=0; i<this.arrLevelUp.length; i++){
-                this.arrLevelUp[i].removeFromParent();
+                this.arrLevelUp[i].removeFromParent(true);
                 this.arrLevelUp[i] = undefined;
             }
             this.arrLevelUp.splice(0, this.arrLevelUp.length);
         }
 
+        //跳出LevelUp圖片
         var levelup = new cc.Sprite(res.LevelUp);
         levelup.setPosition(cc.p(size.width/2, size.height/2));
         this.addChild(levelup);
@@ -68,7 +71,7 @@ var levelLayer = cc.Layer.extend({
         
         //全部的魚炸開，轉成金幣
         for (var i=0; i<FishSprite.length; i++) {
-            var hitfishC = new fishsClass(FishSprite[i].fishno, 1);
+            var hitfishC = new FishsSprite(FishSprite[i].fishno, 1);
             var hitfish = new cc.Sprite(hitfishC.arrAnimFrames[0]);
             this.addChild(hitfish);
             hitfish.setPosition(cc.p(FishSprite[i].oldPos.x, FishSprite[i].oldPos.y));
@@ -79,17 +82,17 @@ var levelLayer = cc.Layer.extend({
             var animate = cc.animate(animation).repeatForever();
             hitfish.runAction(animate);
 
-            //dropCoin ＆＆coinsCounter
+            //dropCoin ＆＆ coinsCounter
             dropCoins(FishSprite[i].coin, cc.p(FishSprite[i].oldPos.x, FishSprite[i].oldPos.y));
             coinsCounter(FishSprite[i].coin, 0, 1);
             
             var fadeAct = cc.fadeOut(1.0);
             hitfish.runAction(cc.sequence(fadeAct, cc.callFunc(hitfish.removeFromParent, hitfish)));
         }
-        //清掉所有魚原本佔用的array空間
+        //清掉所有魚原本佔用的空間
         for(var i=0; i<FishSprite.length; i++){
             FishSprite[i].itsLife = -1;
-            FishSprite[i].removeFromParent();
+            FishSprite[i].removeFromParent(true);
             FishSprite[i] = undefined;
             FishSprite.splice(i, 1);
             i = i - 1;

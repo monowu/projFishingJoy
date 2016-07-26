@@ -251,7 +251,7 @@ cc.eventManager = /** @lends cc.eventManager# */{
             this._removeAllListenersInVector(fixedPriorityListeners);
 
             // Remove the dirty flag according the 'listenerID'.
-            // No need to check whether the dispatcher is dispatching event.
+            // BulletNo need to check whether the dispatcher is dispatching event.
             delete this._priorityDirtyFlagMap[listenerID];
 
             if (!this._inDispatch) {

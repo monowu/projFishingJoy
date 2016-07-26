@@ -13,6 +13,9 @@
 
     "jsList" : [
         "src/resource.js",
+        "src/SystemConst.js",
+        "src/setScheduler.js",
+        "src/Presenter.js",
         "src/View/BubblesLayer.js",
         "src/View/FishesLayer.js",
         "src/View/Wave3DLayer.js",

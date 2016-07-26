@@ -402,7 +402,7 @@ DebuggerTransport.prototype = {
         // header pattern.
         this._incoming = Packet.fromHeader(this._incomingHeader, this);
         if (!this._incoming) {
-          throw new Error("No packet types for header: " +
+          throw new Error("BulletNo packet types for header: " +
                           this._incomingHeader);
         }
       }

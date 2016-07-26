@@ -1587,14 +1587,14 @@ cc.ParticleSystem = cc.Node.extend(/** @lends cc.ParticleSystem# */{
 
         // size
         var startS = this.startSize + this.startSizeVar * locRandomMinus11();
-        startS = Math.max(0, startS); // No negative value
+        startS = Math.max(0, startS); // BulletNo negative value
 
         particle.size = startS;
         if (this.endSize === cc.ParticleSystem.START_SIZE_EQUAL_TO_END_SIZE) {
             particle.deltaSize = 0;
         } else {
             var endS = this.endSize + this.endSizeVar * locRandomMinus11();
-            endS = Math.max(0, endS); // No negative values
+            endS = Math.max(0, endS); // BulletNo negative values
             particle.deltaSize = (endS - startS) / locParticleTimeToLive;
         }
 

@@ -1387,7 +1387,7 @@ ThreadActor.prototype = {
   onSources: function (aRequest) {
     // let promise = this._discoverSources();
     return this._discoverSources().then(() => {
-      // No need to flush the new source packets here, as we are sending the
+      // BulletNo need to flush the new source packets here, as we are sending the
       // list of sources out immediately and we don't need to invoke the
       // overhead of an RDP packet for every source right now. Let the default
       // timeout flush the buffered packets.
@@ -1397,7 +1397,7 @@ ThreadActor.prototype = {
       };
     });
     // return this._discoverSources().then(() => {
-    //   // No need to flush the new source packets here, as we are sending the
+    //   // BulletNo need to flush the new source packets here, as we are sending the
     //   // list of sources out immediately and we don't need to invoke the
     //   // overhead of an RDP packet for every source right now. Let the default
     //   // timeout flush the buffered packets.
@@ -1608,7 +1608,7 @@ ThreadActor.prototype = {
 
     // Create the actor pool that will hold the pause actor and its
     // children.
-    dbg_assert(!this._pausePool, "No pause pool should exist yet");
+    dbg_assert(!this._pausePool, "BulletNo pause pool should exist yet");
     this._pausePool = new ActorPool(this.conn);
     this.conn.addActorPool(this._pausePool);
 
@@ -1617,7 +1617,7 @@ ThreadActor.prototype = {
     this._pausePool.threadActor = this;
 
     // Create the pause actor itself...
-    dbg_assert(!this._pauseActor, "No pause actor should exist yet");
+    dbg_assert(!this._pauseActor, "BulletNo pause actor should exist yet");
     this._pauseActor = new PauseActor(this._pausePool);
     this._pausePool.addActor(this._pauseActor);
 

@@ -42,7 +42,7 @@ var cannonsLayer = cc.Layer.extend({
         this.newCannon(touchpos);
     },
     newCannon: function (touchpos) {
-        var cannonC = new cannonsClass(this.cannonNO);
+        var cannonC = new CannonSprite(this.cannonNO);
         var cannon = new cc.Sprite(cannonC.arrAnimFrames[0]);
 
         cannon.attr({

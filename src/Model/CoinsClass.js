@@ -1,6 +1,7 @@
-var coinsClass = cc.Class.extend({
+var CoinsSprite = cc.Sprite.extend({
     arrCoinFrames: null,
     ctor: function (kind) {
+        this._super();
         // kind=>1: silver kind=>2: golden
         cc.spriteFrameCache.addSpriteFrames(res.Coin_plist , res.Coin_png);
 

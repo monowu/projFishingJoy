@@ -1,6 +1,7 @@
-var numbersClass = cc.Class.extend({
+var NumbersSprite = cc.Sprite.extend({
     arrNumFrames: null,
     ctor: function (num, col) {
+        this._super();
         cc.spriteFrameCache.addSpriteFrames(res.NumGolden_plist , res.NumGolden_png);
         cc.spriteFrameCache.addSpriteFrames(res.NumBlack_plist , res.NumBlack_png);
         cc.spriteFrameCache.addSpriteFrames(res.NumWhite_plist , res.NumWhite_png);
